@@ -27,6 +27,7 @@
 <script>
 
 export default {
+
   data () {
     let validator = function (rule, value, callBack) {
       if (value) {
@@ -61,30 +62,27 @@ export default {
             message: '验证码需要为六位数字'
           }
         ],
-        check: [{ validator }]
+        check: [{ validator: validator }]
       }
     }
   },
   methods: {
     login () {
-      this.$refs.abc.validate(
-        IsOk => {
-          if (IsOk) {
-            this.$axios({
-              url: '/authorizations',
-              method: 'post',
-              data: this.abc
-            }).then(result => {
-              // 把token令牌放在前端缓存
-              window.localStorage.setItem('user-token', result.data.data.token)
-              // 成功就回到主页
-              this.$router.push('/')
-            }).catch(
-              () => this.$message({ message: '手机号验证码有错', type: 'warning' })
-            )
-          }
+      this.$refs.abc.validate(isOk => {
+        if (isOk) {
+          this.$axios({
+            url: '/authorizations',
+            method: 'post',
+            data: this.loginForm
+          }).then(res => {
+            window.localStorage.setItem('user-token', res.data.data.token)
+            this.$router.push('/')
+          }).catch(() => this.$message({
+            message: '验证错误',
+            type: 'waring'
+          }))
         }
-      )
+      })
     }
   }
 
