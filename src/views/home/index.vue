@@ -1,11 +1,22 @@
 <template>
-  <div>
-    home
+<!-- 全局注册了 所以没有引入就使了 -->
+ <el-container>
+<el-aside style='width:201px' >
+<layout-aside></layout-aside>
 
-  </div>
+</el-aside>
+<!-- 因为右侧是上下结构的 要再放一个el-container 右侧-->
+<el-container>
+  <el-header>
+    <layout-header></layout-header>
+    </el-header>
+  <el-main>主体</el-main>
+</el-container>
+ </el-container>
 </template>
 
 <script>
+
 export default {
 
 }
