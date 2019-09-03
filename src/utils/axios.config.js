@@ -1,6 +1,11 @@
 import axios from 'axios'
 import router from '../permission'
 import { Message } from 'element-ui'
+import jsonBigInt from 'json-bigint'
+// 修改数字精度 报错
+axios.defaults.transformResponse = [function (data) {
+  return jsonBigInt.parse(data)
+}]
 axios.interceptors.request.use(
   function (config) {
     let token = window.localStorage.getItem('user-token')

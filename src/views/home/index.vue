@@ -1,7 +1,8 @@
 <template>
 <!-- 全局注册了 所以没有引入就使了 -->
  <el-container>
-<el-aside style='width:201px;background-color:#323745' >
+   <!-- 清除下面滚动条  -->
+<el-aside style='width:201px;background-color:#323745;overflow:hidden' >
 <layout-aside></layout-aside>
 
 </el-aside>

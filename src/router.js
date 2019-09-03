@@ -13,9 +13,18 @@ export default new Router({
       name: 'home',
       component: Home,
       children: [{
-        path: '', // 默认的二级路由  的地址 path为空串
+        path: '', // 默认的二级路由  的地址 path为空串 第三天
         component: Main
-      }]
+      }, {
+        path: 'comment', // 二级路由名字 第四天
+        component: () => import('./views/comment')// 按需加载 挂载路由 第四天
+
+      }, {
+        path: 'material', // 二级路由名字 第四天
+        component: () => import('./views/material')// 按需加载 挂载路由 第四天
+
+      }
+      ]
     },
     {
       path: '/',
