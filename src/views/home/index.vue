@@ -1,7 +1,7 @@
 <template>
 <!-- 全局注册了 所以没有引入就使了 -->
  <el-container>
-<el-aside style='width:201px' >
+<el-aside style='width:201px;background-color:#323745' >
 <layout-aside></layout-aside>
 
 </el-aside>
@@ -10,7 +10,10 @@
   <el-header>
     <layout-header></layout-header>
     </el-header>
-  <el-main>主体</el-main>
+  <el-main class="homeindex" >
+
+    <router-view></router-view>
+    </el-main>
 </el-container>
  </el-container>
 </template>
@@ -22,6 +25,9 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang='less' scoped >
+.homeindex{
+  margin:0;
+  padding:0
+}
 </style>

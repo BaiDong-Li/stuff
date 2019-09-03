@@ -8,19 +8,19 @@
     </el-col>
     <!-- 右侧 -->
     <el-col :span="3" class="right" >
-      <img  class="head-img" src="../../assets/image/avatar.jpg" alt />
+      <img  class="head-img" :src="userInfo.photo ? userInfo.photo : defaultImg " >
       <!-- 下拉菜单入口处 -->
-      <el-dropdown trigger="click">
+      <el-dropdown trigger="click" @command='handleMenuItem' >
         <span class="el-dropdown-link">
-        点击下拉
+        {{userInfo.name}}
           <i class="el-icon-arrow-down el-icon--right"></i>
 
         </span>
         <el-dropdown-menu slot="dropdown">
 
-          <el-dropdown-item>个人信息</el-dropdown-item>
-          <el-dropdown-item >git地址</el-dropdown-item>
-          <el-dropdown-item >退出</el-dropdown-item>
+          <el-dropdown-item command='account' >个人信息</el-dropdown-item>
+          <el-dropdown-item command='git'>git地址</el-dropdown-item>
+          <el-dropdown-item command='lgout' >退出</el-dropdown-item>
 
         </el-dropdown-menu>
       </el-dropdown>
@@ -29,7 +29,39 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data () {
+    return {
+      userInfo: {},
+      defaultImg: require('../../assets/image/avatar.jpg')// 转 为base64
+    }
+  },
+  methods: {
+    getUserInfo () {
+      // let token = window.localStorage.getItem('user-token')
+      this.$axios({
+        url: '/user/profile'
+        // headers: { 'Authorization': `Bearer ${token}` }
+      })
+        .then(res => { this.userInfo = res.data })
+        .catch(err => console.log(err))
+    },
+    handleMenuItem (command) {
+      if (command === 'account') {
+
+      } else if (command === 'git') {
+        window.location.href = 'https://github.com/BaiDong-Li/stuff'
+      } else {
+        window.localStorage.clear()
+        this.$router.push('/login')
+      }
+    }
+
+  },
+  created () {
+    this.getUserInfo()
+  }
+}
 </script>
 
 <style lang='less' scoped >

@@ -77,10 +77,7 @@ export default {
           }).then(res => {
             window.localStorage.setItem('user-token', res.data.data.token)
             this.$router.push('/')
-          }).catch(() => this.$message({
-            message: '验证错误',
-            type: 'waring'
-          }))
+          })
         }
       })
     }
