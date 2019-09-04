@@ -3,6 +3,10 @@
     <bread-crumb slot="header">
       <template slot="title">素材管理</template>
     </bread-crumb>
+    <!-- part of upload -->
+    <el-upload :show-file-list="false" :http-request="uploadImg" action="" class="upload-btn" >
+      <el-button size='small'  type='primary' >upload pictures</el-button>
+    </el-upload>
     <el-tabs v-model="activeName" @tab-click="changeTab">
       <el-tab-pane label="全部素材" name="all">
         <!-- 全部素材的内容 -->
@@ -10,8 +14,8 @@
           <el-card class="img-card" v-for="item in list" :key="item.id">
             <img :src="item.url" />
             <el-row align="middle" class="oper" type="flex" justify="space-around">
-              <i :style="{color:item.is_collected ? 'red' : ''  }" class="el-icon-star-on"></i>
-              <i class="el-icon-delete-solid"></i>
+              <i @click='collectOrCancel(item)' :style="{color:item.is_collected ? 'red' : ''  }" class="el-icon-star-on"></i>
+              <i  @click='delImg(item)' class="el-icon-delete-solid"></i>
             </el-row>
           </el-card>
         </div>
@@ -21,7 +25,7 @@
       </el-tab-pane>
 
       <el-tab-pane label="收藏图片" name="collect">
-        全部收藏的内容
+        <!-- 全部收藏的内容 -->
         <div class="card-list">
           <el-card class="img-card" v-for="item in list" :key="item.id">
             <img :src="item.url" />
@@ -49,6 +53,40 @@ export default {
     }
   },
   methods: {
+    uploadImg (params) {
+      let obj = new FormData()
+      obj.append('image', params.file)
+      this.$axios({
+        url: '/user/images',
+        method: 'post',
+        data: obj
+      })
+        .then(() => {
+          this.getMaterial()
+        })
+    },
+    collectOrCancel (item) {
+      let mess = item.is_collected ? '取消' : ''
+      this.$confirm(`Do you sure to ${mess} this picture ?`, 'warning')
+        .then(() => {
+          this.$axios({
+            url: `/user/images/${item.id}`,
+            method: 'put',
+            data: { collect: !item.is_collected }
+          }).then(() => { this.getMaterial() })
+        })
+    },
+    delImg (item) {
+      this.$confirm('Do you sure to delete this picture?', 'warning')
+        .then(() => {
+          this.$axios({
+            url: `/user/images/${item.id}`,
+            method: 'delete'
+          })
+            .then(() => { this.getMaterial() })
+        })
+    },
+
     changPage (newPage) {
       this.page.page = newPage
       this.getMaterial()
@@ -76,34 +114,16 @@ export default {
     this.getMaterial()
   }
 }
-// export default {
-//   data () {
-//     return {
-//       // 默认选项
-//       activeName: 'all',
-//       list: []
-//     }
-//   },
-//   methods: {
-//     getMaterial () {
-//       this.$axios({
-//         url: '/user/images',
-//         params: {
-//           collect: false// collect是 false就是查全部数据
-//         }
-//       }).then(res => {
-//         this.list = res.data.results
-//       })
-//     }
-//   },
-//   created () {
-//     this.getMaterial()
-//   }
-// }
+
 </script>
 
 <style lang='less' scoped >
 .material {
+  .upload-btn{
+    position: absolute;
+    right:10px;
+    margin-top: -10px;
+  }
   .card-list {
     display: flex;
     flex-wrap: wrap;

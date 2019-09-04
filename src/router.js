@@ -23,7 +23,14 @@ export default new Router({
         path: 'material', // 二级路由名字 第四天
         component: () => import('./views/material')// 按需加载 挂载路由 第四天
 
+      }, {
+        path: 'articles', // 二级路由名字 第四天
+        component: () => import('./views/articles')// 按需加载 挂载路由 第四天
+      }, {
+        path: 'publish', // 二级路由名字 第四天
+        component: () => import('./views/publish')// 按需加载 挂载路由 第四天
       }
+
       ]
     },
     {
